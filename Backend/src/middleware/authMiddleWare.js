@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import userModel from '../model/userModel.js';
+import BlackListToken from '../model/blackListToken.js';
 
-const authMiddleware = async () => {
+const authMiddleware = {
     authUser: async (req, res, next) => {
         const token = req.header("Authorization") || req.cookies.token;
         if (!token) {

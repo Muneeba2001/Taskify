@@ -5,19 +5,16 @@ import BlackListToken from "../model/blackListToken.js";
 const userController = {
   register: async (req, res) => {
     try {
-        const { fullName, email, password } = req.body;
+        const { username, email, password } = req.body;
         const isUserAlreadyExist = await userModel.findOne({ email });
         if (isUserAlreadyExist) {
           return res.status(400).json({ message: "user already exist" });
         }
-      if (!fullName || !fullName.firstName || !fullName.lastName || !email || !password) {
+      if (!username || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
       const user = new userModel({
-        fullName: {
-          firstName: fullName.firstName,
-          lastName: fullName.lastName,
-        },
+        username: req.body.username,
         email: req.body.email,
         password: await bcrypt.hash(req.body.password, 10), 
       });
