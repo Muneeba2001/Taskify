@@ -4,14 +4,6 @@ Taskify is a task management application enabling users to create, assign, and t
 
 ## Project Structure
 
-
-## Installation
-
-1. Clone the repository
-2. Navigate to the `Backend` directory
-3. Install dependencies:
-
-
 ### API Endpoints
 #### User Routes
 - ``` POST /register ``` - Register a new user
