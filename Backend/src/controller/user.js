@@ -1,37 +1,36 @@
 import userModel from "../model/userModel.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import BlackListToken from "../model/blackListToken.js";
 
 const userController = {
   register: async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        const isUserAlreadyExist = await userModel.findOne({ email });
-        if (isUserAlreadyExist) {
-          return res.status(400).json({ message: "user already exist" });
-        }
+      const { username, email, password } = req.body;
+      const isUserAlreadyExist = await userModel.findOne({ email });
+      if (isUserAlreadyExist) {
+        return res.status(400).json({ message: "user already exist" });
+      }
       if (!username || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
       const user = new userModel({
         username: req.body.username,
         email: req.body.email,
-        password: await bcrypt.hash(req.body.password, 10), 
+        password: await bcrypt.hash(req.body.password, 10),
       });
-      
+
       await user.save();
-      const token = user.generateAuthToken();
-      
-        res.status(200).json({message: "user created: ", user, token})
+
+      res.status(200).json({ message: "user created: ", user });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({message: "internel server error", error})
+      console.log(error);
+      res.status(500).json({ message: "internel server error", error });
     }
   },
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const user = await userModel.findOne({ email }).select('+password');
+      const user = await userModel.findOne({ email }).select("+password");
       if (!user) {
         return res.status(401).json({ message: "invalid email and password" });
       }
@@ -49,7 +48,7 @@ const userController = {
   },
   getUserProfile: async (req, res) => {
     try {
-      const user = await userModel.findById(req.user._id).select('-password');
+      const user = await userModel.findById(req.user._id).select("-password");
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -61,7 +60,8 @@ const userController = {
   },
   logout: async (req, res) => {
     try {
-      const token = (req.cookies && req.cookies.token) || req.header("Authorization");
+      const token =
+        (req.cookies && req.cookies.token) || req.header("Authorization");
       const blackListToken = new BlackListToken({ token });
       await blackListToken.save();
       res.clearCookie("token");
