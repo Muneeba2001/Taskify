@@ -7,7 +7,7 @@ Taskify is a task management application enabling users to create, assign, and t
 ### API Endpoints
 #### User Routes
 - ``` POST /register ``` - Register a new user
-- ` POST /login ``` - Login a user
+- ``` POST /login ``` - Login a user
 - ``` GET /profile ``` - Get user profile (requires authentication)
 - ``` GET /logout ``` - Logout a user (requires authentication)
 #### Task Routes
