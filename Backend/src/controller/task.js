@@ -1,12 +1,18 @@
 import Task from "../model/taskModel.js";
-import jwt from "jsonwebtoken";
 
 const taskController = {
   createTask: async (req, res) => {
     try {
-      const { title, description, status, priority, dueDate, createdBy, assignedTo } =
-        req.body;
-        console.log("req.body", req.body)
+      const {
+        title,
+        description,
+        status,
+        priority,
+        dueDate,
+        createdBy,
+        assignedTo,
+      } = req.body;
+      console.log("req.body", req.body);
       const task = new Task({
         title,
         description,
@@ -16,12 +22,12 @@ const taskController = {
         createdBy: req.user._id,
         assignedTo,
       });
-      console.log(task)
+      console.log(task);
       await task.save();
       res.status(201).json(task);
     } catch (error) {
       res.status(500).json({ message: error.message });
-      console.log(error)
+      console.log(error);
     }
   },
   getTasks: async (req, res) => {
