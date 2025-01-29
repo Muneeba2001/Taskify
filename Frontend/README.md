@@ -1,8 +1,33 @@
-# React + Vite
+# Taskify Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for Taskify, a task management application enabling users to create, assign, and track tasks efficiently.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Features
+
+- User Registration & Login
+- Profile Management
+- Create, Update, and Delete Tasks
+- View All Tasks
+- View a Specific Task by ID
+- Assign Priorities and Due Dates
+- Task Report Graph
+
+## Technologies Used
+
+- React.js
+- Tailwind CSS
+- Material-UI
+- Redux Toolkit
+- React Router
+- Axios
+- Chart.js
+
+## Setup
+
+### Prerequisites
+
+- Node.js
+- npm
