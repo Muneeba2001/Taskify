@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; 
 import {
   TextField,
   Card,
@@ -12,10 +14,27 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login submission logic here
+    setError(null); 
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3004/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      navigate("/dashboard");
+      // Handle successful login (e.g., save token, redirect)
+      localStorage.setItem("token", response.data.token);
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Try again.");
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -25,24 +44,15 @@ const Login = () => {
 
   return (
     <div className="h-screen flex justify-center items-center bg-gradient-to-r from-[#FFB74D] to-[#654F90]">
-      {" "}
-      {/* Gradient applied to the background */}
       <Card
         className="max-w-md mx-auto p-6 my-10"
-        sx={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          boxShadow: 3,
-        }}
+        sx={{ backgroundColor: "white", borderRadius: "10px", boxShadow: 3 }}
       >
         <CardContent>
-          <Typography
-            variant="h5"
-            className="text-center mb-10"
-            sx={{ color: "#654F90" }}
-          >
+          <Typography variant="h5" className="text-center mb-10" sx={{ color: "#654F90" }}>
             Login
           </Typography>
+          {error && <p className="text-red-500 text-center">{error}</p>}
           <form onSubmit={handleSubmit}>
             <TextField
               label="Email"
@@ -64,7 +74,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               margin="normal"
             />
-            <CustomButton type="submit" sx={{ margin: "16px" }}>
+            <CustomButton type="submit" onClick={handleSubmit} sx={{ margin: "16px" }}>
               Login
             </CustomButton>
             {/* Google Sign-In Button */}
@@ -84,10 +94,7 @@ const Login = () => {
             </Button>
             <p className="text-center">
               Don't have an account?
-              <Link
-                className="p-1 underline cursor-pointer text-blue-700"
-                to="/register"
-              >
+              <Link className="p-1 underline cursor-pointer text-blue-700" to="/register">
                 Register
               </Link>
             </p>

@@ -20,7 +20,7 @@ const Header = () => {
           {/* Navigation Links with active styling */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <NavLink
-              to="/"
+              to="/dashboard"
               style={({ isActive }) => ({
                 color: "#654F90",
                 marginLeft: "20px", 

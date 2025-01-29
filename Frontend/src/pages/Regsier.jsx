@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Card,
@@ -8,16 +9,34 @@ import {
 } from "@mui/material";
 import CustomButton from "../components/Button";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-
-  const handleSubmit = (e) => {
+  const [username, setUsername] = useState("");
+ const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can add your form submission logic here
+   console.log("Registering user:", username, email, password);
+    const userData = {
+      username,
+      email,
+      password,
+    };
+    console.log("User data being sent:", userData);
+    try {
+      const response = await axios.post("http://localhost:3004/register", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+     navigate("/dashboard");
+    } catch (error) {
+      console.error("Registration Failed:", error.response?.data || error.message);
+       }
   };
+  
 
   const handleGoogleSignIn = () => {
     // Implement Google Sign-In logic here
@@ -50,8 +69,8 @@ const Register = () => {
               variant="outlined"
               fullWidth
               required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               margin="normal"
             />
             <TextField
@@ -74,17 +93,7 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               margin="normal"
             />
-            <TextField
-              label="Confirm Password"
-              variant="outlined"
-              fullWidth
-              required
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              margin="normal"
-            />
-            <CustomButton type="submit" sx={{ margin: "16px" }}>
+            <CustomButton type="submit" onClick={handleSubmit} sx={{ margin: "16px" }}>
               Register
             </CustomButton>
             {/* Google Sign-In Button */}

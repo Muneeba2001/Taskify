@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import userController from "../../controller/user.js";
-import authMiddleware from "../../middleware/authMiddleWare.js"; 
+import authMiddleware from "../../middleware/authMiddleWare.js";
 
 const userRouter = Router();
 userRouter.post(
   "/register",
   [
-    body("email").isEmail().withMessage("invalid Email"),
-    body("fullName.firstName")
+    body("username")
       .isLength({ min: 3 })
       .withMessage("name must have three characters long"),
+    body("email").isEmail().withMessage("invalid Email"),
     body("password")
       .isLength({ min: 6 })
       .withMessage("password must have 6 characters long"),
@@ -27,6 +27,10 @@ userRouter.post(
   ],
   userController.login
 );
-userRouter.get("/profile", authMiddleware.authUser, userController.getUserProfile);
+userRouter.get(
+  "/profile",
+  authMiddleware.authUser,
+  userController.getUserProfile
+);
 userRouter.get("/logout", authMiddleware.authUser, userController.logout);
 export default userRouter;

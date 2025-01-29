@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField, Box, MenuItem } from "@mui/material";
 import axios from "axios";
 
-const AddTaskForm = ({ onTaskAdded }) => {
+const TaskForm = ({ onTaskAdded }) => {
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -95,4 +95,4 @@ const AddTaskForm = ({ onTaskAdded }) => {
   );
 };
 
-export default AddTaskForm;
+export default TaskForm;

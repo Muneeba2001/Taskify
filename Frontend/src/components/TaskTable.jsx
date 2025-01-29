@@ -12,9 +12,9 @@ const TaskTable = ({ tasks }) => {
           <TableHead>
             <TableRow>
               <TableCell><strong>Day</strong></TableCell>
-              <TableCell><strong>Task</strong></TableCell>
+              <TableCell><strong>Title</strong></TableCell>
               <TableCell><strong>Status</strong></TableCell>
-              <TableCell><strong>Schedule</strong></TableCell>
+              <TableCell><strong>Priority</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -35,7 +35,7 @@ const TaskTable = ({ tasks }) => {
                     {task.status}
                   </span>
                 </TableCell>
-                <TableCell>{task.schedule}</TableCell>
+                <TableCell>{task.priority}</TableCell>
               </TableRow>
             ))}
           </TableBody>
