@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField, Box, MenuItem } from "@mui/material";
 import axios from "axios";
 
-const TaskForm = ({ onTaskAdded }) => {
+const TaskForm = ({ onAddTask }) => {
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -22,11 +22,20 @@ const TaskForm = ({ onTaskAdded }) => {
       const response = await axios.post("http://localhost:3004/create", task, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-
-      onTaskAdded(response.data);
-      setTask({ title: "", description: "", status: "pending", priority: "medium", dueDate: "" });
+      console.log("New Task:", response.data);
+      onAddTask(response.data);
+      setTask({
+        title: "",
+        description: "",
+        status: "pending",
+        priority: "medium",
+        dueDate: "",
+      });
     } catch (error) {
-      console.error("Error adding task:", error.response?.data || error.message);
+      console.error(
+        "Error adding task:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -87,7 +96,12 @@ const TaskForm = ({ onTaskAdded }) => {
           <MenuItem value="medium">Medium</MenuItem>
           <MenuItem value="high">High</MenuItem>
         </TextField>
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+        >
           Add Task
         </Button>
       </form>

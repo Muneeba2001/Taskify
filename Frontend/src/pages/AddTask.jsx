@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import TaskForm from './TaskForm';
 
-const AddTask = () => {
+const AddTask = ({onAddTask}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -14,9 +14,9 @@ const AddTask = () => {
   };
 
   const handleAddTask = (newTask) => {
-    // Add the task to your task list (you can update state here if needed)
-    console.log('New task added:', newTask);
-    setOpen(false);  // Close the pop-up after task is added
+    onAddTask(newTask); 
+    console.log("Task added to parent:", newTask);
+    setOpen(false);
   };
 
   return (

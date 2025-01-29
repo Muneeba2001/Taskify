@@ -9,9 +9,9 @@ const Footer = () => {
         <Grid container spacing={3} justifyContent="center">
           {/* Left Side: Copyright and Links */}
           <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" sx={{ marginBottom: '10px' }}>Company Name</Typography>
+            <Typography variant="h6" sx={{ marginBottom: '10px' }}>Taskiy</Typography>
             <Typography variant="body2" sx={{ marginBottom: '8px' }}>
-              <Link href="/" color="inherit">Home</Link>
+              <Link href="/dashboard" color="inherit">Home</Link>
             </Typography>
             <Typography variant="body2" sx={{ marginBottom: '8px' }}>
               <Link href="/about" color="inherit">About Us</Link>
@@ -20,7 +20,7 @@ const Footer = () => {
               <Link href="/contact" color="inherit">Contact</Link>
             </Typography>
             <Typography variant="body2">
-              © {new Date().getFullYear()} Company Name. All Rights Reserved.
+              © {new Date().getFullYear()} Taskify All Rights Reserved.
             </Typography>
           </Grid>
 

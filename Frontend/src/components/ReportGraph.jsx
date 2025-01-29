@@ -13,13 +13,22 @@ ChartJS.register(
   Legend
 );
 
-const ReportGraph = () => {
+const ReportGraph = ({ tasks }) => {
+  // Process tasks data to create the graph data by due dates
+  const dueDateCounts = tasks.reduce((acc, task) => {
+    const dueDate = new Date(task.dueDate).toLocaleDateString();
+    acc[dueDate] = (acc[dueDate] || 0) + 1;
+    return acc;
+  }, {});
+
+  console.log("Due Date Counts:", dueDateCounts); // Log the due date counts to verify the data
+
   const data = {
-    labels: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'],
+    labels: Object.keys(dueDateCounts),
     datasets: [
       {
-        label: 'Record Report',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        label: 'Tasks by Due Date',
+        data: Object.values(dueDateCounts),
         fill: false,
         borderColor: '#FF9B29',
         tension: 0.1,
@@ -35,17 +44,17 @@ const ReportGraph = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 'Monthly Report Overview' },
+      title: { display: true, text: 'Tasks by Due Date' },
     },
     scales: {
-      x: { title: { display: true, text: 'Month' } },
-      y: { title: { display: true, text: 'Record Value' }, beginAtZero: true },
+      x: { title: { display: true, text: 'Due Date' } },
+      y: { title: { display: true, text: 'Count' }, beginAtZero: true },
     },
   };
 
   return (
     <div style={{ marginTop: '30px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-      <h2 style={{ textAlign: 'center', color: '#654F90' }}>Record Report Graph</h2>
+      <h2 style={{ textAlign: 'center', color: '#654F90' }}>Tasks by Due Date</h2>
       <div style={{ position: 'relative', height: '300px', width: '100%' }}>
         <Line data={data} options={options} />
       </div>
