@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import TaskForm from './TaskForm';
+import { TaskContext } from '../context/TaskContext';
 
-const AddTask = ({onAddTask}) => {
+const AddTask = ({ taskToEdit, onUpdateTask }) => {
+  const { addTask } = useContext(TaskContext);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -13,29 +15,15 @@ const AddTask = ({onAddTask}) => {
     setOpen(false);
   };
 
-  const handleAddTask = (newTask) => {
-    onAddTask(newTask); 
-    console.log("Task added to parent:", newTask);
-    setOpen(false);
-  };
-
   return (
     <div>
-      {/* Add Task Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleClickOpen}
-        sx={{ margin: '20px' }}
-      >
+      <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ margin: '20px' }}>
         Add Task
       </Button>
-
-      {/* Dialog for Adding Task */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New Task</DialogTitle>
+        <DialogTitle>{taskToEdit ? 'Edit Task' : 'Add New Task'}</DialogTitle>
         <DialogContent>
-          <TaskForm onAddTask={handleAddTask} />
+          <TaskForm taskToEdit={taskToEdit} onAddTask={addTask} onUpdateTask={onUpdateTask} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
