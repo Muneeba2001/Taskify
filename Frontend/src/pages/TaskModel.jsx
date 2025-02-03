@@ -3,6 +3,7 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 import TaskTable from "../components/TaskTable"; // Assuming this is used for the task details table
 
 const TaskModal = ({ open, selectedTask, handleClose }) => {
+  
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -62,7 +63,7 @@ const TaskModal = ({ open, selectedTask, handleClose }) => {
             </Typography>
 
             {/* Task Table inside the modal */}
-            <TaskTable tasks={[selectedTask]} />
+            <TaskTable tasks={[selectedTask]}/>
 
             <Button
               variant="contained"

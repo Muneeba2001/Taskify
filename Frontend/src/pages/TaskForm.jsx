@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, TextField, Box, MenuItem } from "@mui/material";
 import axios from "axios";
 
-const TaskForm = ({ onAddTask }) => {
+const TaskForm = ({ taskToEdit, onAddTask, onUpdateTask }) => {
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -10,6 +10,12 @@ const TaskForm = ({ onAddTask }) => {
     priority: "medium",
     dueDate: "",
   });
+
+  useEffect(() => {
+    if (taskToEdit) {
+      setTask(taskToEdit); // If there's a task to edit, set it as the form's initial state
+    }
+  }, [taskToEdit]);
 
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
@@ -19,11 +25,28 @@ const TaskForm = ({ onAddTask }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3004/create", task, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      console.log("New Task:", response.data);
-      onAddTask(response.data);
+      if (taskToEdit) {
+        // If a task is being edited, update it
+        const response = await axios.put(
+          `http://localhost:3004/updateTask/${taskToEdit.id}`,
+          task,
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+        onUpdateTask(response.data);
+      } else {
+        // If a new task is being added, create it
+        const response = await axios.post(
+          "http://localhost:3004/create",
+          task,
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+        onAddTask(response.data);
+      }
+
       setTask({
         title: "",
         description: "",
@@ -32,10 +55,7 @@ const TaskForm = ({ onAddTask }) => {
         dueDate: "",
       });
     } catch (error) {
-      console.error(
-        "Error adding task:",
-        error.response?.data || error.message
-      );
+      console.error("Error submitting task:", error.response?.data || error.message);
     }
   };
 
@@ -98,11 +118,11 @@ const TaskForm = ({ onAddTask }) => {
         </TextField>
         <Button
           type="submit"
-          onClick={handleSubmit}
           variant="contained"
           color="primary"
+          onClick={handleSubmit}
         >
-          Add Task
+          {taskToEdit ? "Update Task" : "Add Task"}
         </Button>
       </form>
     </Box>

@@ -2,7 +2,6 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Chart.js setup
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -14,14 +13,11 @@ ChartJS.register(
 );
 
 const ReportGraph = ({ tasks }) => {
-  // Process tasks data to create the graph data by due dates
   const dueDateCounts = tasks.reduce((acc, task) => {
     const dueDate = new Date(task.dueDate).toLocaleDateString();
     acc[dueDate] = (acc[dueDate] || 0) + 1;
     return acc;
   }, {});
-
-  console.log("Due Date Counts:", dueDateCounts); // Log the due date counts to verify the data
 
   const data = {
     labels: Object.keys(dueDateCounts),
