@@ -7,20 +7,34 @@ export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:3004/tasks');
+        setTasks(response.data);
+        localStorage.setItem('tasks', JSON.stringify(response.data));
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
       setTasks(JSON.parse(storedTasks));
     } else {
-      axios.get('http://localhost:3004/tasks')
-        .then(response => {
-          setTasks(response.data);
-          localStorage.setItem('tasks', JSON.stringify(response.data));
-        })
-        .catch(error => {
-          console.error('Error fetching tasks:', error);
-        });
+      fetchTasks();
     }
   }, []);
+
+  const getTaskById = async (taskId) => {
+    try {
+      const response = await axios.get(`http://localhost:3004/getSingleTask/${taskId}`);
+      return response.data; // Specific task ka data return karega
+    } catch (error) {
+      console.error('Error fetching single task:', error);
+      return null;
+    }
+  };
+  
 
   const addTask = async (task) => {
     try {
@@ -62,7 +76,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask, getTaskById }}>
       {children}
     </TaskContext.Provider>
   );

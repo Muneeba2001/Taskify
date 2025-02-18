@@ -4,6 +4,7 @@ import ReportGraph from '../components/ReportGraph';
 import TaskCards from './TaskCard';
 import TaskModal from './TaskModel';
 import AddTask from './AddTask';
+import TaskTable from '../components/TaskTable';
 import { TaskContext } from '../context/TaskContext';
 
 const Dashboard = () => {
@@ -22,6 +23,10 @@ const Dashboard = () => {
     setSelectedTask(null);
   };
 
+  const handleEditTask = (task) => {
+    setTaskToEdit(task);
+  };
+
   return (
     <div>
       <ReportGraph tasks={tasks} />
@@ -32,6 +37,7 @@ const Dashboard = () => {
         <TaskForm taskToEdit={taskToEdit} onAddTask={addTask} onUpdateTask={updateTask} />
       )}
       <TaskCards tasks={tasks} handleClickOpen={handleClickOpen} />
+      <TaskTable onEditTask={handleEditTask} />
       <TaskModal open={open} selectedTask={selectedTask} handleClose={handleClose} />
     </div>
   );

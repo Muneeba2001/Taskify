@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, TextField, Box, MenuItem } from "@mui/material";
-import axios from "axios";
+import { TaskContext } from '../context/TaskContext';
 
-const TaskForm = ({ taskToEdit, onAddTask, onUpdateTask }) => {
+const TaskForm = ({ taskToEdit, onClose }) => {
+  const { addTask, updateTask } = useContext(TaskContext);
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -26,25 +27,9 @@ const TaskForm = ({ taskToEdit, onAddTask, onUpdateTask }) => {
 
     try {
       if (taskToEdit) {
-        // If a task is being edited, update it
-        const response = await axios.put(
-          `http://localhost:3004/updateTask/${taskToEdit.id}`,
-          task,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          }
-        );
-        onUpdateTask(response.data);
+        await updateTask(task);
       } else {
-        // If a new task is being added, create it
-        const response = await axios.post(
-          "http://localhost:3004/create",
-          task,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          }
-        );
-        onAddTask(response.data);
+        await addTask(task);
       }
 
       setTask({
@@ -54,6 +39,8 @@ const TaskForm = ({ taskToEdit, onAddTask, onUpdateTask }) => {
         priority: "medium",
         dueDate: "",
       });
+
+      onClose();
     } catch (error) {
       console.error("Error submitting task:", error.response?.data || error.message);
     }
@@ -120,7 +107,6 @@ const TaskForm = ({ taskToEdit, onAddTask, onUpdateTask }) => {
           type="submit"
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
         >
           {taskToEdit ? "Update Task" : "Add Task"}
         </Button>
